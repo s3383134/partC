@@ -1,11 +1,12 @@
 <?php
 
 require_once ("MiniTemplator.class.php");
+require "db.php"; 
 
 function getSearch($tableName, $attributeName) {
 
     //conection: 
-    $link = mysqli_connect("localhost","webadmin","password","winestore") or die("Error " . mysqli_error($link)); 
+    $link = mysqli_connect(DB_HOST, DB_USER, DB_PW, DB_NAME) or die("Error " . mysqli_error($link)); 
 
     //consultation: 
     $query = "SELECT DISTINCT {$attributeName} FROM {$tableName} ORDER BY {$attributeName}";

@@ -1,10 +1,11 @@
 <?php
 
 require_once ("MiniTemplator.class.php");
+require ("db.php");
 
 function displayWines($wineName, $wineryName, $regionName, $grapeVariety, $year){
     // Conection: 
-    $link = mysqli_connect("localhost","webadmin","password","winestore"); 
+    $link = mysqli_connect(DB_HOST, DB_USER, DB_PW, DB_NAME); 
 
     //consultation: 
     $query = "SELECT 
@@ -17,7 +18,7 @@ function displayWines($wineName, $wineryName, $regionName, $grapeVariety, $year)
 				inv.cost,
 				inv.on_hand, 
 				(SELECT SUM(it.qty) FROM items AS it WHERE it.wine_id = w.wine_id) AS total_sold,
-				(SELECT SUM(it.price) FROM items AS it WHERE it.wine_id = w.wine_id) AS wine_revenue
+				(SELECT SUM(it.price) FROM items AS it WHERE it.wine_id = w.wine_id) AS revenue
 			FROM 
 				grape_variety AS gv
 					JOIN 
@@ -101,7 +102,7 @@ function generatePage(){
 		$t->setVariable('cost', $row['cost']);
 		$t->setVariable('stock', $row['on_hand']);
 		$t->setVariable('totalSold', $row['total_sold']);
-		$t->setVariable('revenue', $row['wine_revenue']);
+		$t->setVariable('revenue', $row['revenue']);
 		
 		$t->addBlock("wines"); 
 	}
